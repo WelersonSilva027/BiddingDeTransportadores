@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fotus Admin - Compliance</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+    <style>
+        body { background-color: #f0f2f5; }
+        
+        /* Estilos do Menu Lateral */
+        .sidebar { min-height: 100vh; background: #2c3e50; color: white; }
+        
+        /* ESTILO DO LOGO E TÍTULO NO ADMIN */
+        .logo-container {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 10px;
+        }
+        
+        .logo-admin {
+            background-color: white; /* Mantém o fundo branco atrás do logo */
+            padding: 10px 15px;
+            border-radius: 8px;
+            max-width: 100%;
+            width: 300px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        /* Novo estilo para o texto "Portal de Bidding" */
+        .titulo-sistema {
+            margin-top: 15px;
+            color: #bdc3c7; /* Um cinza claro elegante, quase branco */
+            font-size: 12px;
+            text-transform: uppercase; /* Letras maiúsculas */
+            letter-spacing: 2px;       /* Espacinho entre letras */
+            font-weight: 600;
+        }
+
+        /* Hover nas linhas da tabela */
+        .card-transportadora { cursor: pointer; transition: 0.2s; }
+        .card-transportadora:hover { background-color: #f8f9fa; transform: translateX(5px); }
+        
+        /* Checkbox maior */
+        .form-check-input { cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div class="d-flex">
+    <div class="sidebar col-md-2">
+        <div class="p-3">
+            
+            <div class="logo-container">
+                <img src="Logo/fotus_cor.png" alt="Fotus Admin" class="logo-admin">
+                <p class="titulo-sistema">Portal de Bidding</p>
+            </div>
+            
+            <hr>
+            
+            <ul class="nav flex-column gap-2">
+                <li class="nav-item">
+                    <a href="#" class="nav-link text-white active" id="menu-todos" onclick="alterarFiltro('todos')">
+                        <i class="material-icons" style="font-size:18px; vertical-align:text-bottom; margin-right: 5px;">dashboard</i>
+                        Dashboard (Todos)
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="#" class="nav-link text-white-50" id="menu-pendente" onclick="alterarFiltro('pendente')">
+                        <i class="material-icons" style="font-size:18px; vertical-align:text-bottom; margin-right: 5px;">hourglass_empty</i>
+                        Pendentes
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link text-white-50" id="menu-aprovado" onclick="alterarFiltro('aprovado')">
+                        <i class="material-icons" style="font-size:18px; vertical-align:text-bottom; margin-right: 5px;">check_circle</i>
+                        Aprovados
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link text-white-50" id="menu-reprovado" onclick="alterarFiltro('reprovado')">
+                        <i class="material-icons" style="font-size:18px; vertical-align:text-bottom; margin-right: 5px;">cancel</i>
+                        Reprovados
+                    </a>
+                </li>
+
+                <li class="nav-item mt-4">
+                    <a href="#" id="btn-logout" class="nav-link text-danger fw-bold">
+                        <i class="material-icons" style="font-size:18px; vertical-align:text-bottom; margin-right: 5px;">logout</i>
+                        Sair
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="col-md-10 p-4">
+        
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h2>Solicitações de Cadastro</h2>
+                <p class="text-muted mb-0">Gerencie a entrada de novas transportadoras.</p>
+            </div>
+            <button id="btn-excluir-massa" class="btn btn-danger d-none">
+                <i class="material-icons" style="font-size:16px; vertical-align:middle;">delete</i> 
+                Excluir Selecionados
+            </button>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body p-0">
+                <table class="table table-hover mb-0 align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width: 50px;" class="text-center">
+                                <input type="checkbox" id="check-all" class="form-check-input">
+                            </th>
+                            <th>Transportadora</th>
+                            <th>CNPJ</th>
+                            <th>Data Envio</th>
+                            <th>Status</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lista-transportadoras">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalDetalhes" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Análise de Documentação</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      
+      <div class="modal-body">
+        <div class="alert alert-light border">
+            <h4 id="modal-razao">Carregando...</h4>
+            <p class="mb-0">CNPJ: <strong id="modal-cnpj">...</strong></p>
+        </div>
+
+        <h6 class="mt-4">Arquivos Anexados:</h6>
+        <div class="list-group" id="lista-arquivos"></div>
+
+        <h6 class="mt-4">Contatos:</h6>
+        <ul class="list-group list-group-flush" id="lista-contatos"></ul>
+
+        <hr>
+        
+        <h6 class="text-primary"><i class="material-icons align-middle fs-6">gavel</i> Análise de Risco & Compliance</h6>
+        
+        <div class="card p-3 bg-light border-0">
+            <label class="form-label fw-bold small text-muted">Apontamentos Críticos (Flags):</label>
+            <div class="d-flex flex-wrap gap-2 mb-3">
+                <input type="checkbox" class="btn-check input-flag" id="flag-debito" value="Débitos em Aberto" autocomplete="off">
+                <label class="btn btn-outline-danger btn-sm" for="flag-debito">Débitos em Aberto</label>
+
+                <input type="checkbox" class="btn-check input-flag" id="flag-processo" value="Processo Jurídico" autocomplete="off">
+                <label class="btn btn-outline-danger btn-sm" for="flag-processo">Processo Jurídico</label>
+
+                <input type="checkbox" class="btn-check input-flag" id="flag-docvencido" value="Doc. Vencido/Inválido" autocomplete="off">
+                <label class="btn btn-outline-warning btn-sm" for="flag-docvencido">Doc. Vencido</label>
+
+                <input type="checkbox" class="btn-check input-flag" id="flag-pendencia" value="Pendência Financeira" autocomplete="off">
+                <label class="btn btn-outline-dark btn-sm" for="flag-pendencia">Pendência Financeira</label>
+            </div>
+
+            <label class="form-label fw-bold small text-muted">Parecer do Analista / Motivo Reprovação:</label>
+            <textarea id="texto-observacao" class="form-control" rows="3" placeholder="Ex: Reprovado pois o CNPJ consta inapto na Receita Federal..."></textarea>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" id="btn-reprovar" class="btn btn-danger">Reprovar</button>
+        <button type="button" id="btn-aprovar" class="btn btn-success">Aprovar Cadastro</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script type="module" src="admin.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>

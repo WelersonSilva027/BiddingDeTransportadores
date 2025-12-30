@@ -68,3 +68,48 @@ input[type="file"] { display: none; }
 }
 #btn-finalizar.ativo { background-color: #28a745; cursor: pointer; }
 #btn-finalizar.ativo:hover { background-color: #218838; }
+
+/* --- CABEÇALHO CENTRALIZADO (NOVO) --- */
+.cabecalho-topo {
+    text-align: center; /* O segredo: centraliza tudo horizontalmente */
+    margin-bottom: 40px; /* Espaço generoso entre o cabeçalho e o primeiro card */
+    padding-top: 10px;
+}
+
+/* Configuração do Logo */
+/* style.css */
+
+/* Configuração do Logo Centralizado e Com Tamanho Controlado */
+.logo-fotus {
+    background-color: transparent !important;
+    display: block; /* Necessário para centralizar com margin auto */
+    
+    /* --- CONTROLE DE TAMANHO --- */
+    /* Mude este valor se ainda achar grande ou pequeno */
+    max-width: 300px; 
+    
+    /* Mantém a proporção correta da imagem */
+    height: auto;
+    width: 100%; 
+
+    /* --- ESPAÇAMENTO --- */
+    /* Centraliza horizontalmente e dá 20px de espaço embaixo */
+    margin: 0 auto 20px auto; 
+}
+
+/* Ajustes nos textos para ficarem harmoniosos com o logo */
+.texto-cabecalho h1 {
+    margin: 0 0 10px 0;
+    color: #2c3e50; /* Cor escura profissional */
+    font-size: 28px; /* Título um pouco maior */
+    font-weight: 700;
+}
+
+.texto-cabecalho p {
+    margin: 0;
+    color: #7f8c8d; /* Cinza mais suave para a descrição */
+    font-size: 16px;
+}
+
+/* Não precisamos mais do media query para celular aqui, 
+   pois o layout centralizado funciona bem em qualquer tela. */
