@@ -4,9 +4,9 @@ Sistema de Gestão e Homologação de Transportadoras desenvolvido para a Fotus 
 O projeto visa digitalizar o processo de cadastro de novas transportadoras, permitindo o envio de documentação legal via portal público e a análise de compliance e risco através de um painel administrativo restrito.
 
 🔗 Links do Projeto
-Portal do Transportador (Público): [Link do seu Netlify aqui]
+Portal do Transportador (Público): https://cadastro-de-transportador-fotus.netlify.app/
 
-Painel Administrativo (Restrito): [Link do seu Netlify aqui]
+Painel Administrativo (Restrito): https://gestao-de-bidding.netlify.app/
 
 🛠️ Tecnologias Utilizadas
 Front-End: HTML5, CSS3, JavaScript (ES6 Modules).
